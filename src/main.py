@@ -1,6 +1,10 @@
 import json
 import sys
 
+from gptcache import cache
+from gptcache.adapter import openai
+from gptcache.processor.pre import all_content
+
 from src import openai_api
 
 class LLM:
@@ -115,10 +119,16 @@ def chat_completion(prompt):
     return response['choices'][0]['message']['content'];
 
 def main():
+    # use gptcache
+    cache.init(pre_embedding_func=all_content) # use all prompts and full history as cache key
+    cache.set_openai_key()
+    
+    # init objects
     llm = LLM()
     db_manager = DatabaseManager("../data/database.txt")
     command_processor = CommandProcessor(llm, db_manager)
 
+    # process command
     try:
         results = command_processor.handle_command(' '.join(sys.argv[1:]))
         print(results)
