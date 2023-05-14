@@ -1,10 +1,18 @@
 import json
 import sys
 
+from src import openai_api
+
 class LLM:
-    def process_command(self, command):
-        # Construct a prompt to instruct the LLM to extract data from the command into JSON format
-        prompt = f"Transform the following command into JSON format: '{command}'"
+    def classify_command(self, command):
+        # Construct a prompt to instruct the LLM to classify the command
+        prompt = f"Classify the following command: '{command}'"
+        classified_command = chat_completion(prompt)
+        return json.loads(classified_command)
+
+    def process_insert(self, command):
+        # Construct a prompt to instruct the LLM to extract data from the insert command into JSON format
+        prompt = f"Transform the following insert command into JSON format: '{command}'"
         processed_command = chat_completion(prompt)
         return json.loads(processed_command)
 
@@ -32,37 +40,41 @@ class CommandProcessor:
         self.db_manager = db_manager
 
     def handle_command(self, command):
-        data = self.llm.process_command(command)
-        self.db_manager.insert_data(data)
-
-    def handle_query(self, query):
-        data = self.db_manager.retrieve_data()
+        classified_commands = self.llm.classify_command(command)
         results = []
-        for entry in data:
-            if self.llm.process_query(json.dumps(entry), query):
-                results.append(entry)
+        for classified_command in classified_commands:
+            if classified_command['action'] == 'INSERT':
+                data = self.llm.process_insert(classified_command['command'])
+                self.db_manager.insert_data(data)
+                results.append(data)
+            elif classified_command['action'] == 'QUERY':
+                data = self.db_manager.retrieve_data()
+                query_results = []
+                for entry in data:
+                    if self.llm.process_query(json.dumps(entry), classified_command['command']):
+                        query_results.append(entry)
+                results.append(query_results)
         return results
 
 def chat_completion(prompt):
     # This function will call the LLM API with the given prompt and return the response
-    pass
+    response = openai_api.generate_chat_completion(prompt);
+    return response['choices'][0]['message']['content'];
 
 def main():
     llm = LLM()
     db_manager = DatabaseManager("../data/database.txt")
     command_processor = CommandProcessor(llm, db_manager)
 
-    if sys.argv[1] == 'insert':
-        command_processor.handle_command(sys.argv[2])
-    elif sys.argv[1] == 'query':
-        results = command_processor.handle_query(sys.argv[2])
-        print(results)
+    results = command_processor.handle_command(' '.join(sys.argv[1:]))
+    print(results)
+    
 
 if __name__ == "__main__":
     main()
     
     # To insert data
-    # python filename.py insert "Insert John Doe with age 25."
+    # python filename.py "Insert John Doe with age 25."
 
     # To query data
-    # python filename.py query "Find all people older than 20."
+    # python filename.py "Find all people older than 20."
