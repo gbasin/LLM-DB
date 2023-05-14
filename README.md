@@ -1,4 +1,4 @@
-# lm-db: a database powered by language models
+# LM-DB: a database powered by language models
 ### "LMs are all you need"
 This project introduces a new type of database that uses Large Language Models (LM) to perform all operations. The main objective is to allow users to interact with the database using natural language, which is then interpreted by an LM and executed on a text-based data store.
 
