@@ -22,3 +22,51 @@ This project consists of the following main components:
 3. Command Processor: This module processes the LM's responses and executes the corresponding database operations.
 
 4. Tests: Unit tests for ensuring the correct functionality of the above components.
+
+## Setup and Installation
+
+1. Make sure you have Python installed. You can download it from the [Python website](https://www.python.org/downloads/).
+
+2. Install Pipenv if you don't have it already. You can install it using pip:
+
+   ```bash
+   pip install pipenv
+   ```
+
+3. Clone the repository or download the project files to your local machine.
+
+4. Navigate to the project directory using the terminal or command line.
+
+5. Create a new virtual environment and install project dependencies with Pipenv:
+
+   ```bash
+   pipenv install
+   ```
+
+This command will create a new virtual environment and install the necessary dependencies based on the Pipfile.
+
+## Running the Project
+
+1. Activate the Pipenv virtual environment:
+
+   ```bash
+   pipenv shell
+   ```
+
+2. Run the project:
+
+   ```bash
+   python main.py
+   ```
+
+3. When you're done with the project, you can exit the virtual environment:
+
+   ```bash
+   exit
+   ```
+
+## Additional Notes
+
+- If you need to install additional dependencies, you can use the `pipenv install` command followed by the package name.
+
+- Make sure to update the `Pipfile` if you add or remove dependencies. You can do this by running `pipenv install package_name`.
