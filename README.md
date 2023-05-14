@@ -1,5 +1,5 @@
 # LM-DB: a database powered by language models
-### "LMs are all you need"
+### "LM is all you need"
 This project introduces a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language, which is then interpreted by an LM and executed on a text-based data store.
 
 For inserting data and querying, we use natural language inputs which are then processed by the LM. The LM interprets the input, and either inserts it into the data store (in JSON), or queries the data store for matching entries (returning the JSON).
@@ -12,18 +12,8 @@ todo
 ## What it can do
 todo
 
-## Project Structure
-This project consists of the following main components:
 
-1. LM API: This is the interface for interaction with the Large Language Model. It includes methods for processing natural language commands and queries.
-
-2. Database Manager: This module manages the database file, including insertion and retrieval of data.
-
-3. Command Processor: This module processes the LM's responses and executes the corresponding database operations.
-
-4. Tests: Unit tests for ensuring the correct functionality of the above components.
-
-## Setup and Installation
+## Setup
 
 1. Make sure you have Python installed. You can download it from the [Python website](https://www.python.org/downloads/).
 
@@ -45,7 +35,7 @@ This project consists of the following main components:
 
 This command will create a new virtual environment and install the necessary dependencies based on the Pipfile.
 
-## Running the Project
+## Running
 
 1. Activate the Pipenv virtual environment:
 
@@ -65,7 +55,7 @@ This command will create a new virtual environment and install the necessary dep
    exit
    ```
 
-## Additional Notes
+## Dev notes
 
 - If you need to install additional dependencies, you can use the `pipenv install` command followed by the package name.
 
