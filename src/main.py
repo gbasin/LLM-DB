@@ -9,60 +9,42 @@ from src import openai_api
 
 class LLM:
     def classify_command(self, command):
-        # Construct a prompt to instruct the LLM to classify the command
-        prompt = f"""
-Given the following command, classify it into a list of actions (INSERT or QUERY) and their associated command text:
-
-Example 1:
-Input: "Insert John Doe with age 25."
-Output: [{"action": "INSERT", "command": "Insert John Doe with age 25."}]
-
-Example 2:
-Input: "Find all people older than 20."
-Output: [{"action": "QUERY", "command": "Find all people older than 20."}]
-
-Input: "{command}"
-"""
+        system_prompt = "You are a database language model. Given the following command, classify it into a list of actions (INSERT or QUERY) and their associated command text. Response only with valid JSON."
+        examples = [
+            {"name": "example_user", "content": "Insert John Doe with age 25."},
+            {"name": "example_assistant", "content": '[{"action": "INSERT", "command": "Insert John Doe with age 25."}]'}
+        ]
+        prompt = command
         try:
-            classified_command = chat_completion(prompt)
+            classified_command = chat_completion(system_prompt, examples, prompt)
             return json.loads(classified_command)
         except Exception as e:
             print(f"Error while classifying command: {e}")
             return []
 
     def process_insert(self, command):
-        # Construct a prompt to instruct the LLM to extract data from the insert command into JSON format
-        prompt = f"""
-Given the following INSERT command, transform it into JSON format:
-
-Example:
-Input: "Insert John Doe with age 25."
-Output: {"name": "John Doe", "age": 25}
-
-Input: "{command}"
-"""
+        system_prompt = "You are a database language model. Given the following INSERT command, transform it into JSON format."
+        examples = [
+            {"name": "example_user", "content": "Insert John Doe with age 25."},
+            {"name": "example_assistant", "content": '{"name": "John Doe", "age": 25}'}
+        ]
+        prompt = command
         try:
-            processed_insert = chat_completion(prompt)
-            return json.loads(processed_insert)
+            processed_command = chat_completion(system_prompt, examples, prompt)
+            return json.loads(processed_command)
         except Exception as e:
             print(f"Error while processing insert command: {e}")
             return {}
 
     def process_query(self, json_entry, query):
-        # Construct a prompt to instruct the LLM to compare the JSON entry with the query criteria
-        prompt = f"""
-Given the following database entry and query, determine whether the entry meets the query criteria:
-
-Example:
-Database Entry: {"name": "John Doe", "age": 25}
-Query: "Find all people older than 20."
-Output: Yes
-
-Database Entry: {json_entry}
-Query: {query}
-"""
+        system_prompt = "You are a database language model. Given the following database entry and query, determine whether the entry meets the query criteria."
+        examples = [
+            {"name": "example_user", "content": 'Database Entry: {"name": "John Doe", "age": 25}, Query: "Find all people older than 20."'},
+            {"name": "example_assistant", "content": 'Yes'}
+        ]
+        prompt = f"Database Entry: {json_entry}, Query: {query}"
         try:
-            processed_query = chat_completion(prompt)
+            processed_query = chat_completion(system_prompt, examples, prompt)
             return processed_query.lower() == 'yes'
         except Exception as e:
             print(f"Error while processing query: {e}")
@@ -113,9 +95,9 @@ class CommandProcessor:
             print(f"Error while handling command: {e}")
             return []
 
-def chat_completion(prompt):
+def chat_completion(system_message, examples, prompt):
     # This function will call the LLM API with the given prompt and return the response
-    response = openai_api.generate_chat_completion(prompt);
+    response = openai_api.generate_chat_completion(prompt, system_message, examples);
     return response['choices'][0]['message']['content'];
 
 def main():
