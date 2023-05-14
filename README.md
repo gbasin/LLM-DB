@@ -2,16 +2,15 @@
 ### "LMs are all you need"
 This project introduces a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language, which is then interpreted by an LM and executed on a text-based data store.
 
+For inserting data and querying, we use natural language inputs which are then processed by the LM. The LM interprets the input, and either inserts it into the data store (in JSON), or queries the data store for matching entries (returning the JSON).
+
 The data store used in this project is a flat file where each line represents a separate entry in the database. This was chosen for simplicity and because it is well-suited for the iterative approach we use for queries.
 
-For inserting data and querying, we use natural language inputs which are then processed by the LM. The LM interprets the input and generates appropriate commands for the database operations.
+## Motivation
+todo
 
-For queries, each entry in the database is looped through and the LM is used to check if it meets the given criteria.
-
-## How it Works
-Data Insertion: Users input natural language commands for data insertion. The LM processes these commands and translates them into the appropriate format for the database. The data is then inserted into the text file.
-
-Data Query: Users input natural language queries. The LM processes these queries and generates criteria for filtering the database entries. The system then loops through each entry in the database and uses the LM to check if the entry meets the criteria.
+## What it can do
+todo
 
 ## Project Structure
 This project consists of the following main components:
