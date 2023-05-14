@@ -1,8 +1,5 @@
 import openai
 
-class BadMessagesFormat(Exception):
-    pass
-
 def generate_chat_completion(messages, 
                              system_message = "You are a helpful assistant.",
                              examples = [], 
@@ -27,7 +24,7 @@ def generate_chat_completion(messages,
     elif (isinstance(messages, list)):
         chat_messages.extend(messages)
     else:
-        raise BadMessagesFormat('`messages` object must be a list of object literals like `"{`"role`": `"user`", `"content`": message`" or a string');
+        raise Exception('`messages` object must be a list of object literals like `"{`"role`": `"user`", `"content`": message`" or a string');
 
     response = openai.ChatCompletion.create(
         model=model,
