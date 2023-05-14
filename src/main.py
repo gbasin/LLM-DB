@@ -6,19 +6,49 @@ from src import openai_api
 class LLM:
     def classify_command(self, command):
         # Construct a prompt to instruct the LLM to classify the command
-        prompt = f"Classify the following command: '{command}'"
+        prompt = f"""
+Given the following command, classify it into a list of actions (INSERT or QUERY) and their associated command text:
+
+Example 1:
+Input: "Insert John Doe with age 25."
+Output: [{"action": "INSERT", "command": "Insert John Doe with age 25."}]
+
+Example 2:
+Input: "Find all people older than 20."
+Output: [{"action": "QUERY", "command": "Find all people older than 20."}]
+
+Input: "{command}"
+"""
         classified_command = chat_completion(prompt)
         return json.loads(classified_command)
 
     def process_insert(self, command):
         # Construct a prompt to instruct the LLM to extract data from the insert command into JSON format
-        prompt = f"Transform the following insert command into JSON format: '{command}'"
+        prompt = f"""
+Given the following INSERT command, transform it into JSON format:
+
+Example:
+Input: "Insert John Doe with age 25."
+Output: {"name": "John Doe", "age": 25}
+
+Input: "{command}"
+"""
         processed_command = chat_completion(prompt)
         return json.loads(processed_command)
 
     def process_query(self, json_entry, query):
         # Construct a prompt to instruct the LLM to compare the JSON entry with the query criteria
-        prompt = f"Does the following database entry '{json_entry}' meet the criteria specified in this query: '{query}'?"
+        prompt = f"""
+Given the following database entry and query, determine whether the entry meets the query criteria:
+
+Example:
+Database Entry: {"name": "John Doe", "age": 25}
+Query: "Find all people older than 20."
+Output: Yes
+
+Database Entry: {json_entry}
+Query: {query}
+"""
         processed_query = chat_completion(prompt)
         return processed_query.lower() == 'yes'
 
