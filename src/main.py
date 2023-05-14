@@ -49,15 +49,15 @@ class LLM:
     def process_query(self, json_entry, query):
         system_prompt = "You are a database language model. Given the following database entry and query, determine whether the entry meets the query criteria. Respond only with Yes or No."
         examples = [
-            {"name": "example_user", "content": '{"database_entry": {"type": "book", "title": "The Catcher in the Rye", "author": "J.D. Salinger", "publication_year": 1951}, "query": "Find all books published before 2000."}'},
+            {"name": "example_user", "content": 'database_entry: {"type": "book", "title": "The Catcher in the Rye", "author": "J.D. Salinger", "publication_year": 1951}, query: "Find all books published before 2000."'},
             {"name": "example_assistant", "content": 'Yes'},
-            {"name": "example_user", "content": '{"database_entry": {"type": "movie", "title": "Inception", "director": "Christopher Nolan", "release_year": 2010}, "query": "Find all movies released in 2010."}'},
+            {"name": "example_user", "content": 'database_entry: {"type": "movie", "title": "Inception", "director": "Christopher Nolan", "release_year": 2010}, query: "Find all movies released in 2010."'},
             {"name": "example_assistant", "content": 'Yes'},
-            {"name": "example_user", "content": '{"database_entry": {"type": "product", "name": "iPhone 12", "price": 799}, "query": "Find all products with a price below $500."}'},
+            {"name": "example_user", "content": 'database_entry: {"type": "product", "name": "iPhone 12", "price": 799}, query: "Find all products with a price below $500."'},
             {"name": "example_assistant", "content": 'No'}
         ]
 
-        prompt = f"Database Entry: {json_entry}, Query: {query}"
+        prompt = f"database_entry: {json_entry}, query: {query}"
         try:
             processed_query = chat_completion(system_prompt, examples, prompt)
             return processed_query.lower() == 'yes'
