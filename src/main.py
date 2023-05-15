@@ -74,6 +74,8 @@ class DatabaseManager:
         try:
             with open(self.filename, 'a') as f:
                 f.write(json.dumps(data) + '\n')
+                
+            print("added to DB: " + json.dumps(data));
         except Exception as e:
             print(f"Error while inserting data: {e}")
 
@@ -142,7 +144,8 @@ def main():
     # process command
     try:
         results = command_processor.handle_command(' '.join(sys.argv[1:]))
-        print(results)
+        for result in results:
+            print(json.dumps(result))
     except Exception as e:
         print(f"An error occurred: {e}")
         
