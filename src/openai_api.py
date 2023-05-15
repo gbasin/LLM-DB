@@ -26,6 +26,7 @@ def generate_chat_completion(messages,
     else:
         raise Exception('`messages` object must be a list of object literals like `"{`"role`": `"user`", `"content`": message`" or a string');
 
+    print("out: " + str(chat_messages[-1]));
     response = openai.ChatCompletion.create(
         model=model,
         messages=chat_messages,
@@ -33,7 +34,8 @@ def generate_chat_completion(messages,
         max_tokens=max_tokens
     )
     
-    #response_txt = response['choices'][0]['message']['content'];
+    response_txt = response['choices'][0]['message']['content'];
+    print("in: " + response_txt)
         
     #if response.get('gptcache'):
     #    print('cached: true')
