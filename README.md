@@ -50,10 +50,6 @@ This command will create a new virtual environment and install the necessary dep
    ```bash
     python main.py "Insert John Doe with age 25 and find all people older than 20."
    ```
-3. When you're done with the project, you can exit the virtual environment:
-   ```bash
-   exit
-   ```
 
 # Dev notes
 
