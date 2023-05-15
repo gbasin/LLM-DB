@@ -1,24 +1,6 @@
 import json
 
-def extract_json_from_string(s):
-    """
-    This function takes a string that may contain a JSON object along with other text.
-    It attempts to extract and decode the JSON object from the string.
-
-    First, it checks if the entire string is a valid JSON. If it is, it immediately decodes and returns it.
-
-    If the whole string is not valid JSON, it assumes that there is exactly one JSON object in the string 
-    and that it's the largest substring that forms a valid JSON object. It attempts to find the start 
-    and end of this JSON object by iteratively trying to decode the JSON from the start of the string 
-    until it's successful, then from the end of the string backwards until it's successful.
-
-    Note: This function may not work as expected if these assumptions are not met, 
-    or if there are other substrings that can be parsed as JSON but are not the desired JSON object. 
-
-    It is best used when you are confident in the structure of the input string and want a simple way 
-    to extract a JSON object from it.
-    """
-
+def extract_json_from_string_greedy(s):
     # Check if the entire string is valid JSON
     try:
         json_data = json.loads(s)
@@ -50,3 +32,38 @@ def extract_json_from_string(s):
             print(f"Error while extracting JSON from string: {e}")
             
         return json_data
+
+def extract_json_from_string(s):
+    """
+    This function takes a string that may contain a JSON object along with other text.
+    It attempts to extract and decode the JSON object from the string.
+    
+    The function assumes that there's exactly one JSON object in the string,
+    and it starts at the first '{' or '[' character and ends at the last '}' or ']' character.
+    """
+    try:
+        # Find the first '{' or '[' character
+        start = s.find('[')
+        if start == -1:  # '[' not found
+            start = s.find('{')
+        else:
+            start = min(start, s.find('{'))
+        
+        # Find the last '}' or ']' character
+        end = s.rfind(']')
+        if end == -1:  # ']' not found
+            end = s.rfind('}')
+        else:
+            end = max(end, s.rfind('}'))
+        end += 1  # +1 to include the '}' or ']' character
+        
+        # Extract the substring between the start and end indices
+        json_string = s[start:end]
+        
+        # Decode the JSON string to a Python object
+        json_data = json.loads(json_string)
+        
+        return json_data
+    except json.JSONDecodeError:
+        print("No valid JSON object could be decoded from the string.")
+        return None

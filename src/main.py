@@ -100,6 +100,10 @@ class CommandProcessor:
             for classified_command in classified_commands:
                 if classified_command['action'] == 'INSERT':
                     data = self.llm.process_insert(classified_command['command'])
+                    
+                    if data is None or not (isinstance(data, dict) or isinstance(data, list)):
+                        continue;
+                        
                     self.db_manager.insert_data(data)
                     results.append("INSERTED: " + str(data))
                 elif classified_command['action'] == 'QUERY':
