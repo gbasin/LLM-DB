@@ -2,10 +2,6 @@ import json
 import sys
 import os
 
-from gptcache import cache
-from gptcache.adapter import openai
-from gptcache.processor.pre import all_content
-
 import openai_api
 
 from dotenv import load_dotenv
@@ -127,10 +123,6 @@ def main():
     # Load environment variables from .env file
     load_dotenv()
     
-    # init gptcache
-    cache.init(pre_embedding_func=all_content) # use all prompts and full history as cache key
-    cache.set_openai_key()
-    
     # init objects
     llm = LLM()
     
@@ -149,6 +141,8 @@ def main():
         print(results)
     except Exception as e:
         print(f"An error occurred: {e}")
+        
+    # cache.flush()
     
 
 if __name__ == "__main__":

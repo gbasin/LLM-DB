@@ -1,4 +1,7 @@
 import openai
+from gptcache import cache
+from gptcache.adapter import openai
+from gptcache.processor.pre import all_content
 
 def generate_chat_completion(messages, 
                              system_message = "You are a helpful assistant.",
@@ -26,7 +29,11 @@ def generate_chat_completion(messages,
     else:
         raise Exception('`messages` object must be a list of object literals like `"{`"role`": `"user`", `"content`": message`" or a string');
 
-    print("out: " + str(chat_messages[-1]));
+    print("out: " + str(chat_messages[-1]))
+    
+    cache.init(pre_embedding_func=all_content)
+    cache.set_openai_key()
+    
     response = openai.ChatCompletion.create(
         model=model,
         messages=chat_messages,
@@ -35,7 +42,11 @@ def generate_chat_completion(messages,
     )
     
     response_txt = response['choices'][0]['message']['content'];
-    print("in: " + response_txt)
+    
+    if(response.get('gptcache')):
+        print("in (cached): " + response_txt);
+    else:
+        print("in: " + response_txt)
         
     #if response.get('gptcache'):
     #    print('cached: true')
