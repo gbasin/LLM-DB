@@ -12,9 +12,14 @@ The data store is a flat file where each line represents a separate entry in the
  to allow web browsing with the {browse} command, add another capability to send emails with \
  the {email} command, and retrieve all capabilities that may provide access to wikipedia data"
 
+Activity:
 INSERTED: {'type': 'capability', 'function': 'web_browsing', 'command': 'browse'}
 INSERTED: {'type': 'new_capability', 'command': 'email', 'command_arg': '{email}'}
 ["MATCH: {'type': 'capability', 'function': 'web_browsing', 'command': 'browse'}"]
+
+(myenv) (base) garybasin@MacBook-Pro-23 lm-db % cat data/database.txt
+{"type": "capability", "function": "web_browsing", "command": "browse"}
+{"type": "new_capability", "command": "email", "command_arg": "{email}"}
 ```
 
 # Motivation

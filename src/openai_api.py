@@ -30,7 +30,7 @@ def generate_chat_completion(messages,
     else:
         raise Exception('`messages` object must be a list of object literals like `"{`"role`": `"user`", `"content`": message`" or a string');
 
-    print("to LM: " + str(chat_messages[-1]))
+    # print("to LM: " + str(chat_messages[-1]))
     
     cache.init(pre_embedding_func=all_content)
     cache.set_openai_key()
@@ -44,12 +44,9 @@ def generate_chat_completion(messages,
     
     response_txt = response['choices'][0]['message']['content'];
     
-    if(response.get('gptcache')):
-        print("from LM (cached): " + response_txt);
-    else:
-        print("from LM: " + response_txt)
-        
-    #if response.get('gptcache'):
-    #    print('cached: true')
+    # if(response.get('gptcache')):
+    #     print("from LM (cached): " + response_txt);
+    # else:
+    #     print("from LM: " + response_txt)
     
     return response
