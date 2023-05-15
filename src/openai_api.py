@@ -2,11 +2,12 @@ import openai
 from gptcache import cache
 from gptcache.adapter import openai
 from gptcache.processor.pre import all_content
+import os
 
 def generate_chat_completion(messages, 
                              system_message = "You are a helpful assistant.",
                              examples = [], 
-                             model = "gpt-3.5-turbo", 
+                             model = os.environ.get("DEFAULT_MODEL") or "gpt-4",
                              temperature = 0,
                              max_tokens = 256):
     

@@ -12,7 +12,8 @@
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [
-                "Insert John Doe with age 25 and find all people older than 20."
+                //"Insert John Doe with age 25 and find all people older than 20."
+                "create a new capability to allow web browsing with the {browse} command, add another capability to send emails with the {email} command, and retrieve all capabilities that may provide access to wikipedia data"
             ]
         }
     ]
