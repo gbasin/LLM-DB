@@ -1,6 +1,6 @@
 # LM-DB: a database powered by language models
 ### "LM is all you need"
-This project introduces a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language, which is then interpreted by an LM and executed on a text-based data store.
+This project introduces a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language.
 
 For inserting data and querying, we use natural language inputs which are then processed by the LM. The LM interprets the input, and either inserts it into the data store (in JSON), or queries the data store for matching entries (returning the JSON).
 
