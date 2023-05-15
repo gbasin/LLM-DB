@@ -113,7 +113,7 @@ class CommandProcessor:
                     query_results = []
                     for entry in data:
                         if self.llm.process_query(json.dumps(entry), classified_command['command']):
-                            query_results.append("MATCHED: " + str(entry))
+                            query_results.append("MATCH: " + str(entry))
                     results.append(query_results)
             return results
         except Exception as e:
@@ -145,7 +145,7 @@ def main():
     try:
         results = command_processor.handle_command(' '.join(sys.argv[1:]))
         for result in results:
-            print(json.dumps(result))
+            print(result)
     except Exception as e:
         print(f"An error occurred: {e}")
         

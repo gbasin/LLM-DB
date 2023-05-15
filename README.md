@@ -6,20 +6,19 @@ For inserting data and querying, we use natural language inputs which are then p
 
 The data store is a flat file where each line represents a separate entry in the database.
 
+## Example
+```
+(myenv) (base) garybasin@MacBook-Pro-23 lm-db % python src/main.py "create a new capability \
+ to allow web browsing with the {browse} command, add another capability to send emails with \
+ the {email} command, and retrieve all capabilities that may provide access to wikipedia data"
+
+INSERTED: {'type': 'capability', 'function': 'web_browsing', 'command': 'browse'}
+INSERTED: {'type': 'new_capability', 'command': 'email', 'command_arg': '{email}'}
+["MATCH: {'type': 'capability', 'function': 'web_browsing', 'command': 'browse'}"]
+```
+
 # Motivation
 todo
-
-# What it can do
-### Unstructured and inference-based queries
-LM-DB queries can take advantage of LM-internal knowledge to capture meaning missing from fields or schema
-
-Example: "Find me all authors who wrote dystopian novels." 
-
-If the 'genre' field doesn't exist in the database, an SQL query would fail. The LLM, on the other hand, could infer the genre based on book titles and authors if it has been trained on such data.
-
-Example: "Insert a product named 'iPhone 12' with a price of $799. Then, tell me all the expensive products."
-
-Here, the LLM could infer what 'expensive' means based on the prices of the products in the database, even if 'expensive' hasn't been explicitly defined. This kind of relative and inference-based query would be difficult for a traditional database.
 
 
 # Setup
@@ -37,8 +36,6 @@ Here, the LLM could infer what 'expensive' means based on the prices of the prod
    ```bash
    pipenv install
    ```
-
-This command will create a new virtual environment and install the necessary dependencies based on the Pipfile.
 
 # Running
 
