@@ -44,5 +44,9 @@ def extract_json_from_string(s):
                 pass
 
         # Decode the JSON string to a Python object
-        json_data = json.loads(json_string)
+        try:
+            json_data = json.loads(json_string)
+        except Exception as e:
+            print(f"Error while extracting JSON from string: {e}")
+            
         return json_data
