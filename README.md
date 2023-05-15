@@ -24,7 +24,7 @@ Here, the LLM could infer what 'expensive' means based on the prices of the prod
 
 # Setup
 
-1. Create a `.env` file with your openai api key (see .env.example)
+1. Create a `.env` file with your openai api key (see `.env.example`)
 2. Install Pipenv if you don't have it already. You can install it using pip:
 
    ```bash
