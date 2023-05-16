@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+import re
 
 import openai_api
 
@@ -57,14 +58,20 @@ class LLM:
             {"name": "example_user", "content": 'database_entry: {"type": "phone", "name": "iPhone 12", "price": 799}, query: "Find all products with a price below $500."'},
             {"name": "example_assistant", "content": 'This is an \'iPhone 12\' which is sold as a product, and its price is 799, which is above 500. Therefore: (0)'},
             {"name": "example_user", "content": 'database_entry: {"topic": "accounting", "info": "the next quarter is likely to be profitable"}, query: "Get all info that may help predict the next year revenues"'},
-            {"name": "example_assistant", "content": 'The next year likely includes the next quarter, and the \'accounting\' \'info\' stating it is \'likely to be profitable\' is probably relevant for prediction. Therefore(85)'}
+            {"name": "example_assistant", "content": 'The next year likely includes the next quarter, and the \'accounting\' \'info\' stating it is \'likely to be profitable\' is probably relevant for prediction. Therefore: (85)'}
         ]
 
         prompt = f"database_entry: {json_entry}, query: {query}"
         try:
             processed_query = chat_completion(system_prompt, examples, prompt)
-            print(processed_query + " -- " + json_entry);
-            return 'yes' in processed_query.lower()
+            print(json_entry + " --- " + processed_query);
+            
+            # Extract the number in parentheses from the end of the string
+            matches = re.findall(r'\((\d+)\)', processed_query)
+            prob = int(matches[-1]) if matches else 0
+            
+            # print(str(prob) + "%")
+            return prob > 50
         except Exception as e:
             print(f"Error while processing query: {e}")
             return False
