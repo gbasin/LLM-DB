@@ -6,7 +6,7 @@ For inserting data and querying, we use natural language inputs which are then p
 
 The data store is a flat file where each line represents a separate entry in the database.
 
-## Example
+## Example 1
 ```
 % python src/main.py "create a new capability \
 to allow web browsing with the {browse} command, add another capability to send emails with \
@@ -21,6 +21,15 @@ INSERTED: {'type': 'new_capability', 'command': 'email', 'command_arg': '{email}
 
 % python src/main.py "retrieve all capabilities that may provide access to wikipedia data"
 
+Entry: {"type": "capability", "function": "web_browsing", "command": "browse"}
+Query result: The 'capability' with 'function' 'web_browsing' can potentially provide access to Wikipedia data by browsing the Wikipedia website. Therefore: (90)
+Match probability: 90%
+
+Entry: {"type": "new_capability", "command": "email", "command_arg": "{email}"}
+Query result: This entry is about a 'new_capability' with a 'command' for 'email', which is not related to providing access to Wikipedia data. Therefore: (0)
+Match probability: 0%
+
+Results:
 ["{'type': 'capability', 'function': 'web_browsing', 'command': 'browse'}"]
 ```
 

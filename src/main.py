@@ -64,13 +64,15 @@ class LLM:
         prompt = f"database_entry: {json_entry}, query: {query}"
         try:
             processed_query = chat_completion(system_prompt, examples, prompt)
-            print(json_entry + " --- " + processed_query);
+            print("\nEntry: " + json_entry)
+            print("Query result: " + processed_query);
             
             # Extract the number in parentheses from the end of the string
             matches = re.findall(r'\((\d+)\)', processed_query)
             prob = int(matches[-1]) if matches else 0
             
-            # print(str(prob) + "%")
+            print("Match probability: " + str(prob) + "%")
+            
             return prob > 50
         except Exception as e:
             print(f"Error while processing query: {e}")
@@ -153,8 +155,8 @@ def main():
     
     # process command
     try:
-        print("\n")
         results = command_processor.handle_command(' '.join(sys.argv[1:]))
+        print("\nResults:")
         for result in results:
             print(result)
     except Exception as e:
