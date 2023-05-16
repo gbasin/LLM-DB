@@ -48,19 +48,22 @@ class LLM:
             return {}
 
     def process_query(self, json_entry, query):
-        system_prompt = "You are a database language model. Given the following database entry and query, determine whether the entry meets the query criteria. Respond only with Yes or No."
+        system_prompt = "You are a database language model. Given the following database entry and query, determine whether the entry meets the query criteria. Respond with some reasoning and a probability in parenthesis (0-100)."
         examples = [
             {"name": "example_user", "content": 'database_entry: {"type": "book", "title": "The Catcher in the Rye", "author": "J.D. Salinger", "publication_year": 1951}, query: "Find all books published before 2000."'},
-            {"name": "example_assistant", "content": 'Yes'},
+            {"name": "example_assistant", "content": 'This is a \'book\' and the \'publication_year\' is 1951, which is before 200. Therefore: (100)'},
             {"name": "example_user", "content": 'database_entry: {"type": "movie", "title": "Inception", "director": "Christopher Nolan", "release_year": 2010}, query: "Find all movies released in 2010."'},
-            {"name": "example_assistant", "content": 'Yes'},
-            {"name": "example_user", "content": 'database_entry: {"type": "product", "name": "iPhone 12", "price": 799}, query: "Find all products with a price below $500."'},
-            {"name": "example_assistant", "content": 'No'}
+            {"name": "example_assistant", "content": 'This is a \'movie\' and \'release_year\' is precisely 2010. Therefore: (100)'},
+            {"name": "example_user", "content": 'database_entry: {"type": "phone", "name": "iPhone 12", "price": 799}, query: "Find all products with a price below $500."'},
+            {"name": "example_assistant", "content": 'This is an \'iPhone 12\' which is sold as a product, and its price is 799, which is above 500. Therefore: (0)'},
+            {"name": "example_user", "content": 'database_entry: {"topic": "accounting", "info": "the next quarter is likely to be profitable"}, query: "Get all info that may help predict the next year revenues"'},
+            {"name": "example_assistant", "content": 'The next year likely includes the next quarter, and the \'accounting\' \'info\' stating it is \'likely to be profitable\' is probably relevant for prediction. Therefore(85)'}
         ]
 
         prompt = f"database_entry: {json_entry}, query: {query}"
         try:
             processed_query = chat_completion(system_prompt, examples, prompt)
+            print(processed_query + " -- " + json_entry);
             return 'yes' in processed_query.lower()
         except Exception as e:
             print(f"Error while processing query: {e}")
