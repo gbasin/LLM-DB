@@ -119,7 +119,7 @@ class CommandProcessor:
                         continue;
                         
                     self.db_manager.insert_data(data)
-                    results.append("INSERTED: " + str(data))
+                    print("INSERTED: " + str(data))
                 elif classified_command['action'] == 'QUERY':
                     data = self.db_manager.retrieve_data()
                     query_results = []

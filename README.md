@@ -61,7 +61,16 @@ todo
    ```
 2. Run the project:
    ```bash
-    python main.py "Insert John Doe with age 25 and find all people older than 20."
+   %python src/main.py "Insert John Doe with age 25 and find all people older than 20."
+
+   INSERTED: {'name': 'John Doe', 'age': 25}
+
+   Entry: {"name": "John Doe", "age": 25}
+   Query result: This entry has 'John Doe' with an 'age' of 25, which is older than 20. Therefore: (100)
+   Match probability: 100%
+
+   Results:
+   ["{'name': 'John Doe', 'age': 25}"]
    ```
 
 # Dev notes
