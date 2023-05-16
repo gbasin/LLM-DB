@@ -9,7 +9,7 @@ The data store is a flat file where each line represents a separate entry in the
 ## Example
 ```
 % python src/main.py "create a new capability \
- to allow web browsing with the {browse} command, add another capability to send emails with \
+to allow web browsing with the {browse} command, add another capability to send emails with \
  the {email} command"
 
 INSERTED: {'type': 'capability', 'function': 'web_browsing', 'command': 'browse'}
