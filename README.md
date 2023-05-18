@@ -74,7 +74,7 @@ Results:
 
 Using an LM to reason about each potential match for a query gives you much smarter results than vector embedding similarity. Let's compare.
 
-Notice how the vector embeddings are all pretty similar (the first line is the string that we will compare distances to):
+Notice how the vector embeddings are all pretty similar, in this case I'm using OpenAI's ada-002. The first line is the string that we will compare similarity to:
 
 ```
 % python src/scripts/calc_cosine_sim.py "\
