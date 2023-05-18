@@ -1,6 +1,6 @@
 # LM-DB: a database powered by language models
 ### "LM is all you need"
-This project introduces a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language. Currently, it supports inserting data and querying it, both with natural language and leveraging whatever reasoning capability is present in the LM.
+This project is a proof of concept for a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language. Currently, it supports inserting data and querying it, both with natural language and leveraging whatever reasoning capability is present in the LM.
 
 To process a query, the LM interprets the input, and either inserts it into the data store, or queries the data store for matching entries one at a time. The data store is a flat file where each line represents a separate entry in the database.
 
@@ -145,3 +145,6 @@ If we're building for a world where small LMs are narrowly smart, fast, and run 
    Results:
    ["{'name': 'John Doe', 'age': 25}"]
    ```
+
+# Dev notes
+- The project uses `gptcache` which caches responses from LM queries, reusing them when possible (makes testing much faster!). These are currently stored in a `data_map.txt` file.
