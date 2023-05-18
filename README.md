@@ -110,9 +110,11 @@ Results:
 ```
 
 # Motivation
-In short, retrieval based on vector similarity tends to grab lots of extra stuff, or even miss content that could be relevant when you apply a little reasoning (like the wikipedia browsing example above). You could of course use vector search to get lots of candidates, stuff them into a context window, and ask an LLM about them. The problem is, this doesn't scale -- LLMs get easily confused with more content in the context (check out [Large Language Models Can Be Easily Distracted by Irrelevant Context](https://arxiv.org/pdf/2302.00093.pdf))
+LMs, even large ones, will constantly need to be taught new information, or provided data that doesn't exist in their weights. Facts change, people have private data stores, etc. The best way to do this will often be at inference time, by providing the information as context.
 
-If we're building for a world where small LMs are narrowly smart, fast, and run locally (~zero cost), a lot of cool things become possible -- essentially we can build databases that perform basic reasoning. I bet this is likely to be the case within the next few years. As a hint of what's possible already, see [TinyStories](https://arxiv.org/abs/2305.07759) -- 30 million param LMs trained for a narrow task (generating children's stories) exhibiting basic reasoning and getting close to GPT-4 level performance as assessed by GPT-4.
+Vector embedding search is insufficient. Embedding vectors are not smart enough to perform the kind of reasoning that happens in a forward pass of an LM. Embedding search tends to retrieve lots of irrelevant matches, or even miss content that could be relevant when you apply a little reasoning (like the wikipedia browsing example above). You could, of course, use vector search to get lots of candidates, stuff them into a context window (maybe rerank some first?), and ask an LLM about them. The problem is, this doesn't scale -- LLMs get easily confused with more content in the context (check out [Large Language Models Can Be Easily Distracted by Irrelevant Context](https://arxiv.org/pdf/2302.00093.pdf))
+
+If we're building for a world where small LMs are narrowly smart, fast, and run locally (~zero cost), a lot of cool things become possible -- essentially we can build databases that can think. I bet this is likely to be the case within the next few years. As a hint of what's possible already, see [TinyStories](https://arxiv.org/abs/2305.07759) -- 30 million param LMs trained for a narrow task (generating children's stories) exhibiting basic reasoning and getting close to GPT-4 level performance (as assessed by GPT-4).
 
 
 # Setup
