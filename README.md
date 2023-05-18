@@ -11,7 +11,7 @@ INSERTED: {'type': 'person', 'name': 'John', 'age': 30}
 INSERTED: {'type': 'animal', 'species': 'cat', 'name': 'Bob', 'age': 7}
 ```
 
-It's stored in plaintext:
+It's stored in plaintext JSON:
 ```
 % cat data/database.txt
 {"type": "person", "name": "John", "age": 30}
