@@ -40,7 +40,7 @@ Using an LM to reason about each potential match for a query gives you much smar
 Notice how the vector embeddings are all pretty similar (the first line is the string that we will compare distances to):
 
 ```
-python src/scripts/calc_cosine_sim.py "\
+% python src/scripts/calc_cosine_sim.py "\
   info on what a home appraisal is|\
   home appraisals are necessary for getting a mortgage|\
   tax assessments estimate the value for tax purposes|\
@@ -147,4 +147,5 @@ If we're building for a world where small LMs are narrowly smart, fast, and run 
    ```
 
 # Dev notes
+- The database is stored in `data/database.txt`
 - The project uses `gptcache` which caches responses from LM queries, reusing them when possible (makes testing much faster!). These are currently stored in a `data_map.txt` file.
