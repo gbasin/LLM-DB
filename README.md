@@ -98,12 +98,12 @@ Using techniques like [Hypothetical Document Embeddings (HyDE)](https://arxiv.or
   home appraisals are necessary for getting a mortgage|\
   tax assessments estimate the value for tax purposes|\
   Tax assessments are not the same as home appraisals|\
-  home appraisals estimate the home's value and are a requirement"
+  home appraisals estimate the home's value and are a requirement to get a mortgage"
 1.0000000000000002
 0.8628389021604684
 0.82073464427003
 0.8495163850290542
-0.8783869751576889
+0.8781256937562402
 ```
 
 Of course, the LMDB does a pretty good job. First, insert the facts:
@@ -112,7 +112,7 @@ Of course, the LMDB does a pretty good job. First, insert the facts:
 % python src/main.py "add a home appraisal fact: they are necessary for getting a mortgage, \
 add a tax assessment fact: they estimate the value for tax purposes, \
 add another tax assessment fact: they are not the same as a home appraisal, \
-add a mortgage fact: home appraisals estimate the home's value and are a requirement"
+add a mortgage fact: home appraisals estimate the home's value and are a requirement to get a mortgage"
 
 
 INSERTED: {'type': 'home_appraisal_fact', 'fact': 'necessary for getting a mortgage'}
