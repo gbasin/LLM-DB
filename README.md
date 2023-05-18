@@ -147,7 +147,7 @@ Results:
 ```
 
 
-# Setup
+## Setup
 
 1. Create a `.env` file with your openai api key (see `.env.example`)
 2. Install Pipenv if you don't have it already. You can install it using pip:
@@ -178,6 +178,6 @@ Results:
    ["{'name': 'John Doe', 'age': 25}"]
    ```
 
-# Dev notes
+## Dev notes
 - The database is stored in `data/database.txt`
 - The project uses `gptcache` which caches responses from LM queries, reusing them when possible (makes testing much faster!). These are currently stored in a `data_map.txt` file.
