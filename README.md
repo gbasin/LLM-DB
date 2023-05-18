@@ -1,6 +1,6 @@
 # LMDB: a database powered by language models
 ## "LM is all you need"
-This project is a proof of concept for a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language. Currently, it supports inserting data and querying it, using natural language and leveraging whatever reasoning capability is present in the LM.
+This project is a proof of concept for a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language. Currently, it supports inserting data and querying it, using natural language and leveraging whatever reasoning capability is present in the LM (just using OpenAI for now here).
 
 To process a query, the LM interprets the input, and either inserts it into the data store, or queries the data store for matching entries one at a time. The data store is a flat file where each line represents a separate entry in the database.
 
