@@ -1,11 +1,48 @@
 # LM-DB: a database powered by language models
-### "LM is all you need"
+## "LM is all you need"
 This project is a proof of concept for a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language. Currently, it supports inserting data and querying it, both with natural language and leveraging whatever reasoning capability is present in the LM.
 
 To process a query, the LM interprets the input, and either inserts it into the data store, or queries the data store for matching entries one at a time. The data store is a flat file where each line represents a separate entry in the database.
 
+To insert data, just describe the entries:
+```
+% python src/main.py "add a person named john who's 30 years old, and a cat named bob who is 7 yrs old"
+INSERTED: {'type': 'person', 'name': 'John', 'age': 30}
+INSERTED: {'type': 'animal', 'species': 'cat', 'name': 'Bob', 'age': 7}
+```
+
+It's stored in plaintext:
+```
+% cat data/database.txt
+{"type": "person", "name": "John", "age": 30}
+{"type": "animal", "species": "cat", "name": "Bob", "age": 7}
+```
+
+And finally, query with natural language:
+```
+% python src/main.py "all living things under 10 years old"
+
+Entry: {"type": "person", "name": "John", "age": 30}
+Query result: This entry is of type 'person' and John is a living thing, but his age is 30, which is above the 10-year criterion. Therefore: (0)
+Match probability: 0%
+
+Entry: {"type": "animal", "species": "cat", "name": "Bob", "age": 7}
+Query result: This entry is about a 'cat' which is a living thing, and its 'age' is 7, which is under 10 years old. Therefore: (100)
+Match probability: 100%
+
+Results:
+["{'type': 'animal', 'species': 'cat', 'name': 'Bob', 'age': 7}"]
+```
+
+## Motivation
+LMs, even large ones, will constantly need to be taught new information, or provided data that doesn't exist in their weights. Facts change, people have private data stores, etc. The best way to do this will often be at inference time, by providing the information as context.
+
+Vector embedding search is insufficient. Embedding vectors are not smart enough to perform the kind of reasoning that happens in a forward pass of an LM. Embedding search tends to retrieve lots of irrelevant matches, or even miss content that could be relevant when you apply a little reasoning (like the wikipedia browsing example in the Examples below). You could, of course, use vector search to get lots of candidates, stuff them into a context window (maybe rerank some first?), and ask an LLM about them. The problem is, this doesn't scale -- LLMs get easily confused with more content in the context (check out [Large Language Models Can Be Easily Distracted by Irrelevant Context](https://arxiv.org/pdf/2302.00093.pdf))
+
+If we're building for a world where small LMs are narrowly smart, fast, and run locally (~zero cost), a lot of cool things become possible -- essentially we can build databases that can think. I bet this is likely to be the case within the next few years. As a hint of what's possible already, see [TinyStories](https://arxiv.org/abs/2305.07759) -- 30 million param LMs trained for a narrow task (generating children's stories) exhibiting basic reasoning and getting close to GPT-4 level performance (as assessed by GPT-4).
+
 ## Examples
-LMDB's are useful when you want your search to use a little bit of reasoning.
+LMDB's are useful when you want your query to use a little bit of reasoning.
 
 For example, you can create a database of some tools that we want the LM to know about, and use the LMDB to look up ones relevant to as a task. Here we add ane mail and web browsing tool, then ask the LMDB to find which tool could be good for getitng data from wikipedia:
 
@@ -108,13 +145,6 @@ Match probability: 100%
 Results:
 ['{\'type\': \'mortgage_fact\', \'description\': "home appraisals estimate the home\'s value and are a requirement"}']
 ```
-
-# Motivation
-LMs, even large ones, will constantly need to be taught new information, or provided data that doesn't exist in their weights. Facts change, people have private data stores, etc. The best way to do this will often be at inference time, by providing the information as context.
-
-Vector embedding search is insufficient. Embedding vectors are not smart enough to perform the kind of reasoning that happens in a forward pass of an LM. Embedding search tends to retrieve lots of irrelevant matches, or even miss content that could be relevant when you apply a little reasoning (like the wikipedia browsing example above). You could, of course, use vector search to get lots of candidates, stuff them into a context window (maybe rerank some first?), and ask an LLM about them. The problem is, this doesn't scale -- LLMs get easily confused with more content in the context (check out [Large Language Models Can Be Easily Distracted by Irrelevant Context](https://arxiv.org/pdf/2302.00093.pdf))
-
-If we're building for a world where small LMs are narrowly smart, fast, and run locally (~zero cost), a lot of cool things become possible -- essentially we can build databases that can think. I bet this is likely to be the case within the next few years. As a hint of what's possible already, see [TinyStories](https://arxiv.org/abs/2305.07759) -- 30 million param LMs trained for a narrow task (generating children's stories) exhibiting basic reasoning and getting close to GPT-4 level performance (as assessed by GPT-4).
 
 
 # Setup
