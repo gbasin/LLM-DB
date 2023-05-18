@@ -82,7 +82,7 @@ Notice how the vector embeddings are all pretty similar, in this case I'm using 
   home appraisals are necessary for getting a mortgage|\
   tax assessments estimate the value for tax purposes|\
   Tax assessments are not the same as home appraisals|\
-  home appraisals estimate the home's value and are a requirement"
+  home appraisals estimate the home's value and are a requirement to get a mortgage"
 1.0000000000000002
 0.8862083445084581
 0.82672579893429
