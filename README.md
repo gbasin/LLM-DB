@@ -13,7 +13,7 @@ INSERTED: {'type': 'animal', 'species': 'cat', 'name': 'Bob', 'age': 7}
 
 It's stored in plaintext JSON:
 ```
-% cat data/database.txt
+% cat data/database.jsonl
 {"type": "person", "name": "John", "age": 30}
 {"type": "animal", "species": "cat", "name": "Bob", "age": 7}
 ```
@@ -179,5 +179,5 @@ Results:
    ```
 
 ## Dev notes
-- The database is stored in `data/database.txt`
+- The database is stored in `data/database.jsonl`
 - The project uses `gptcache` which caches responses from LM queries, reusing them when possible (makes testing much faster!). These are currently stored in a `data_map.txt` file.
