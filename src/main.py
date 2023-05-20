@@ -8,19 +8,20 @@ from typing import List, Optional
 from dotenv import load_dotenv
 
 from json_util import extract_json_from_string
-
-from gptcache import cache
-from gptcache.adapter import openai
-from gptcache.processor.pre import all_content
+from cache import Cache
 
 class LLM:
     def __init__(self):
-        self.cache = cache
-        self.cache.init(pre_embedding_func=all_content)
-        self.cache.set_openai_key() 
+        self.cache = Cache('llm_cache.cache')
         
     def openai_completion(self, command, system_message, history):
-        return openai.ChatCompletion.create(
+        cache_key = "|".join([command, system_message, str(history)])
+        cached_response = self.cache.get(cache_key)
+        
+        if (cached_response):
+            return cached_response
+        
+        response = openai.ChatCompletion.create(
                 model=os.environ.get('OPENAI_DEFAULT_MODEL'),
                 messages=[
                     {"role": "system", "content": system_message}, 
@@ -28,9 +29,12 @@ class LLM:
                     {"role": "user", "content": command}
                     ],
                 temperature = 0,
-                max_tokens = 256,
-                cache_obj=self.cache
-            )        
+                max_tokens = 256
+            )
+        
+        self.cache.set(cache_key, response)
+        
+        return response
     
     def classify_command(self, command):
         system_message = "You are a database language model. Given the following command, classify it into a list of actions (INSERT or QUERY) and their associated contents or criteria. Respond only with valid JSON."
