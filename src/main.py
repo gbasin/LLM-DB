@@ -186,10 +186,14 @@ class CommandProcessor:
 
     async def get_query_results(self, query, data):
         query_results = []
-        for entry in data:
-            # process queries async
-            if await self.llm.process_query(json.dumps(entry), query['command']):
-                query_results.append(str(entry))
+        
+        tasks = [self.llm.process_query(json.dumps(entry), query['command']) for entry in data]
+        
+        results = await asyncio.gather(*tasks)
+        
+        for result in results:
+            query_results.append(str(result))
+    
         return query_results
 
 
