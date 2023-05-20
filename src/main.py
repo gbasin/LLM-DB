@@ -38,7 +38,7 @@ class LLM:
         
         return response
 
-    def classify_command(self, command):
+    async def classify_command(self, command):
         system_message = "You are a database language model. Given the following command, classify it into a list of actions (INSERT or QUERY) and their associated contents or criteria. Respond only with valid JSON."
         history = [
             {"role": "system", "name": "example_user",
@@ -188,7 +188,7 @@ class CommandProcessor:
         query_results = []
         for entry in data:
             # process queries async
-            if self.llm.process_query(json.dumps(entry), query['command']):
+            if await self.llm.process_query(json.dumps(entry), query['command']):
                 query_results.append(str(entry))
         return query_results
 
