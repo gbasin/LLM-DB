@@ -12,36 +12,68 @@ from json_util import extract_json_from_string
 from gptcache import cache
 from gptcache.adapter import openai
 from gptcache.processor.pre import all_content
+from gptcache.adapter.langchain_models import LangChainChat
+
+from langchain.chat_models import ChatOpenAI
+from langchain import PromptTemplate, LLMChain
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    SystemMessagePromptTemplate,
+    SystemMessage,
+    AIMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
+from langchain.schema import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage
+)
 
 class LLM:
     def __init__(self):
         self.cache = cache
         self.cache.init(pre_embedding_func=all_content)
         self.cache.set_openai_key() 
+        self.chat = LangChainChat(chat=ChatOpenAI(temperature=0))
     
     def classify_command(self, command):
         system_message = "You are a database language model. Given the following command, classify it into a list of actions (INSERT or QUERY) and their associated contents or criteria. Respond only with valid JSON."
-        history = [
-            {"role": "system", "name": "example_user", "content": "Insert a new book with title '1984' by George Orwell."},
-            {"role": "system", "name": "example_assistant", "content": '[{"action": "INSERT", "command": "New book with title \'1984\' by George Orwell."}]'},
-            {"role": "system", "name": "example_user", "content": "Find all books published before 2000."},
-            {"role": "system", "name": "example_assistant", "content": '[{"action": "QUERY", "command": "All books published before 2000."}]'},
-            {"role": "system", "name": "example_user", "content": "Add an animal, a cat named Whiskers, aged 2 and search for all animals younger than 5."},
-            {"role": "system", "name": "example_assistant", "content": '[{"action": "INSERT", "command": "An animal: a cat named Whiskers, aged 2"}, {"action": "QUERY", "command": "All animals younger than 5."}]'},
-        ]
+        # history = [
+        #     {"role": "system", "name": "example_user", "content": "Insert a new book with title '1984' by George Orwell."},
+        #     {"role": "system", "name": "example_assistant", "content": '[{"action": "INSERT", "command": "New book with title \'1984\' by George Orwell."}]'},
+        #     {"role": "system", "name": "example_user", "content": "Find all books published before 2000."},
+        #     {"role": "system", "name": "example_assistant", "content": '[{"action": "QUERY", "command": "All books published before 2000."}]'},
+        #     {"role": "system", "name": "example_user", "content": "Add an animal, a cat named Whiskers, aged 2 and search for all animals younger than 5."},
+        #     {"role": "system", "name": "example_assistant", "content": '[{"action": "INSERT", "command": "An animal: a cat named Whiskers, aged 2"}, {"action": "QUERY", "command": "All animals younger than 5."}]'},
+        # ]
 
         try:
-            llm_response = openai.ChatCompletion.create(
-                model=os.environ.get('OPENAI_DEFAULT_MODEL'),
-                messages=[
-                    {"role": "system", "content": system_message}, 
-                    *history, 
-                    {"role": "user", "content": command}
-                    ],
-                temperature = 0,
-                max_tokens = 256,
-                cache_obj=self.cache
-            )
+            system_message_prompt = SystemMessagePromptTemplate.from_template(system_message)
+            history = [
+                SystemMessagePromptTemplate.from_template("Insert a new book with title '1984' by George Orwell.", additional_kwargs={"name": "example_user"}),
+                SystemMessagePromptTemplate.from_template('[{{"action": "INSERT", "command": "New book with title \'1984\' by George Orwell."}}]', additional_kwargs={"name": "example_assistant"}),
+                SystemMessagePromptTemplate.from_template("Find all books published before 2000.", additional_kwargs={"name": "example_user"}),
+                SystemMessagePromptTemplate.from_template('[{{"action": "QUERY", "command": "All books published before 2000."}}]', additional_kwargs={"name": "example_assistant"}),
+                SystemMessagePromptTemplate.from_template("Add an animal, a cat named Whiskers, aged 2 and search for all animals younger than 5.", additional_kwargs={"name": "example_user"}),
+                SystemMessagePromptTemplate.from_template('[{{"action": "INSERT", "command": "An animal: a cat named Whiskers, aged 2"}}, {{"action": "QUERY", "command": "All animals younger than 5."}}]', additional_kwargs={"name": "example_assistant"})
+            ]
+            
+            human_message_prompt = HumanMessagePromptTemplate.from_template("{text}")
+            chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt, *history, human_message_prompt])
+            chain = LLMChain(llm=self.chat, prompt=chat_prompt)            
+            llm_response = chain.run(command)
+            
+            # llm_response = openai.ChatCompletion.create(
+            #     model=os.environ.get('OPENAI_DEFAULT_MODEL'),
+            #     messages=[
+            #         {"role": "system", "content": system_message}, 
+            #         *history, 
+            #         {"role": "user", "content": command}
+            #         ],
+            #     temperature = 0,
+            #     max_tokens = 256,
+            #     cache_obj=self.cache
+            # )
             
             completion = llm_response['choices'][0]['message']['content'];
             return extract_json_from_string(completion);

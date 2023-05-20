@@ -11,6 +11,7 @@ matplotlib = "*"
 plotly = "*"
 tenacity = "*"
 pandas = "*"
+langchain = "*"
 
 [dev-packages]
 
