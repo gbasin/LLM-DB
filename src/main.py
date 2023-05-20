@@ -18,6 +18,19 @@ class LLM:
         self.cache = cache
         self.cache.init(pre_embedding_func=all_content)
         self.cache.set_openai_key() 
+        
+    def openai_completion(self, command, system_message, history):
+        return openai.ChatCompletion.create(
+                model=os.environ.get('OPENAI_DEFAULT_MODEL'),
+                messages=[
+                    {"role": "system", "content": system_message}, 
+                    *history, 
+                    {"role": "user", "content": command}
+                    ],
+                temperature = 0,
+                max_tokens = 256,
+                cache_obj=self.cache
+            )        
     
     def classify_command(self, command):
         system_message = "You are a database language model. Given the following command, classify it into a list of actions (INSERT or QUERY) and their associated contents or criteria. Respond only with valid JSON."
@@ -31,17 +44,7 @@ class LLM:
         ]
 
         try:
-            llm_response = openai.ChatCompletion.create(
-                model=os.environ.get('OPENAI_DEFAULT_MODEL'),
-                messages=[
-                    {"role": "system", "content": system_message}, 
-                    *history, 
-                    {"role": "user", "content": command}
-                    ],
-                temperature = 0,
-                max_tokens = 256,
-                cache_obj=self.cache
-            )
+            llm_response = self.openai_completion(command, system_message, history)
             
             completion = llm_response['choices'][0]['message']['content'];
             return extract_json_from_string(completion);
@@ -61,17 +64,7 @@ class LLM:
         ]
 
         try:
-            llm_response = openai.ChatCompletion.create(
-                model=os.environ.get('OPENAI_DEFAULT_MODEL'),
-                messages=[
-                    {"role": "system", "content": system_message}, 
-                    *history, 
-                    {"role": "user", "content": command}
-                    ],
-                temperature = 0,
-                max_tokens = 256,
-                cache_obj=self.cache
-            )
+            llm_response = self.openai_completion(command, system_message, history)
             
             completion = llm_response['choices'][0]['message']['content'];
             return extract_json_from_string(completion);       
@@ -94,17 +87,7 @@ class LLM:
 
         prompt = f"database_entry: {json_entry}, query: {query}"
         try:
-            llm_response = openai.ChatCompletion.create(
-                model=os.environ.get('OPENAI_DEFAULT_MODEL'),
-                messages=[
-                    {"role": "system", "content": system_message}, 
-                    *history, 
-                    {"role": "user", "content": prompt}
-                    ],
-                temperature = 0,
-                max_tokens = 256,
-                cache_obj=self.cache
-            )            
+            llm_response = self.openai_completion(prompt, system_message, history)
             
             completion = llm_response['choices'][0]['message']['content'];
             
