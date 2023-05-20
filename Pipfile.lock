@@ -389,11 +389,11 @@
         },
         "gptcache": {
             "hashes": [
-                "sha256:070aad4867ab915a7b5db3a886e9f0289e52d1cb92a407c984b0241298079750",
-                "sha256:aa591cb00898d457a50a5e0cd137d0119e86819c110ce6c7bce2adafeae0a467"
+                "sha256:3b6f81609cad2b1b804b576275327e2ddd061ca4cc879785c690985cfcb7f26f",
+                "sha256:9634fbbbc2151d12376cd53667682b912ce46812d793331d2e2d46a8a127ed9a"
             ],
             "index": "pypi",
-            "version": "==0.1.24"
+            "version": "==0.1.25"
         },
         "idna": {
             "hashes": [
@@ -640,11 +640,11 @@
         },
         "openai": {
             "hashes": [
-                "sha256:1f07ed06f1cfc6c25126107193726fe4cf476edcc4e1485cd9eb708f068f2606",
-                "sha256:63ca9f6ac619daef8c1ddec6d987fe6aa1c87a9bfdce31ff253204d077222375"
+                "sha256:788fb7fa85bf7caac6c1ed7eea5984254a1bdaf09ef485acf0e5718c8b2dc25a",
+                "sha256:bca95fd4c3054ef38924def096396122130454442ec52005915ecf8269626b1d"
             ],
             "index": "pypi",
-            "version": "==0.27.6"
+            "version": "==0.27.7"
         },
         "packaging": {
             "hashes": [
