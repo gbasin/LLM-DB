@@ -126,7 +126,10 @@ class LLM:
 
             print("Match probability: " + str(prob) + "%")
 
-            return prob > 50
+            if prob > 50:
+                return json_entry
+            else:
+                return None
         except Exception as e:
             print(f"Error while processing query: {e}")
             return False
@@ -192,7 +195,8 @@ class CommandProcessor:
         results = await asyncio.gather(*tasks)
         
         for result in results:
-            query_results.append(str(result))
+            if (result):
+                query_results.append(str(result))
     
         return query_results
 
