@@ -180,4 +180,4 @@ Results:
 
 ## Dev notes
 - The database is stored in `data/database.jsonl`
-- The project uses `gptcache` which caches responses from LM queries, reusing them when possible (makes testing much faster!). These are currently stored in a `data_map.txt` file.
+- The project caches responses from LM queries, reusing them when possible (makes testing much faster!). These are currently stored in a `llm_cache.cache` file.
