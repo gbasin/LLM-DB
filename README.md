@@ -1,4 +1,4 @@
-# LMDB: a database powered by language models
+# LLM-DB: a database powered by language models
 ## "LM is all you need"
 This project is a proof of concept for a new type of database that uses Language Models (LMs) to perform all operations. The main objective is to allow users to interact with the database using natural language. Currently, it supports inserting data and querying it, using natural language and leveraging whatever reasoning capability is present in the LM (just using OpenAI for now here).
 
@@ -42,9 +42,9 @@ Vector embedding search is insufficient. Embedding vectors are not smart enough 
 If we're building for a world where small LMs are narrowly smart, fast, and run locally (~zero cost), a lot of cool things become possible -- essentially **we can build databases that can think.** I bet this will be possible within the next few years. As a hint of what's possible already, see [TinyStories](https://arxiv.org/abs/2305.07759) -- 30 million param LMs trained for a narrow task (generating children's stories) exhibiting basic reasoning and getting close to GPT-4 level performance (as assessed by GPT-4).
 
 ## Examples
-LMDB's are useful when you want your query to use a little bit of reasoning.
+LLM-DB's are useful when you want your query to use a little bit of reasoning.
 
-For example, you can create a database of some tools that we want the LM to know about, and use the LMDB to look up ones relevant to as a task. Here we add ane mail and web browsing tool, then ask the LMDB to find which tool could be good for getitng data from wikipedia:
+For example, you can create a database of some tools that we want the LM to know about, and use the LLM-DB to look up ones relevant to as a task. Here we add ane mail and web browsing tool, then ask the LLM-DB to find which tool could be good for getitng data from wikipedia:
 
 ```
 % python src/main.py "create a new capability \
@@ -106,7 +106,7 @@ Using techniques like [Hypothetical Document Embeddings (HyDE)](https://arxiv.or
 0.8781256937562402
 ```
 
-Of course, the LMDB does a pretty good job. First, insert the facts:
+Of course, the LLM-DB does a pretty good job. First, insert the facts:
 
 ```
 % python src/main.py "add a home appraisal fact: they are necessary for getting a mortgage, \
@@ -121,7 +121,7 @@ INSERTED: {'type': 'fact', 'topic': 'tax assessment', 'description': 'not the sa
 INSERTED: {'type': 'mortgage_fact', 'description': "home appraisals estimate the home's value and are a requirement"}
 ```
 
-Then query. LMDB also has the benefit of providing reasoning for which rows match the query, and some estimate of probability.
+Then query. LLM-DB also has the benefit of providing reasoning for which rows match the query, and some estimate of probability.
 
 ```
 % python src/main.py "get info that explains what a home appraisal is"
